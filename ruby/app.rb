@@ -802,6 +802,8 @@ module Isupipe
 
         # iconsにも保存する
         user = tx.xquery("SELECT name FROM users WHERE id = ?", user_id).first
+        raise "WIP: #{ICONS_DIR}/#{user[:name]}.jpg"
+
         File.open("#{ICONS_DIR}/#{user[:name]}.jpg", 'wb') do |f|
           f.write(image)
         end
