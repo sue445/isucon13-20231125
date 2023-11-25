@@ -83,7 +83,7 @@ module Isupipe
         db_conn.query('BEGIN')
         ok = false
         begin
-          retval = block.call(db_conn)
+          retval = yield(db_conn)
           db_conn.query('COMMIT')
           ok = true
           retval
