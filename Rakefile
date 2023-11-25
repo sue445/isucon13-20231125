@@ -14,8 +14,8 @@ require "json"
 
 # デプロイ先のサーバ
 HOSTS = {
-  host01: "isucon-01", # nginx, mysql, app
-  # host02: "isucon-02",
+  host01: "isucon-01", # nginx, app
+  host02: "isucon-02", # mysql
   # host03: "isucon-03",
 }
 
@@ -47,15 +47,19 @@ end
 
 def exec_service(ip_address, service:, enabled:, status: true)
   if enabled
-    exec ip_address, "sudo systemctl restart #{service}"
-    exec ip_address, "sudo systemctl enable #{service}"
+    # exec ip_address, "sudo systemctl restart #{service}"
+    # exec ip_address, "sudo systemctl enable #{service}"
+    exec ip_address, "sudo systemctl enable --now #{service}"
 
     if status
       exec ip_address, "sudo systemctl status #{service}"
     end
   else
-    exec ip_address, "sudo systemctl stop #{service}"
-    exec ip_address, "sudo systemctl disable #{service}"
+    # exec ip_address, "sudo systemctl stop #{service}"
+    # exec ip_address, "sudo systemctl disable #{service}"
+
+    # FIXME: stopしてもなぜか起動する
+    exec ip_address, "sudo systemctl disable --now #{service}"
   end
 end
 
@@ -89,8 +93,9 @@ namespace :deploy do
 
       # mysql, mariadb
       case name
-      when :host01
+      when :host02
         exec ip_address, "sudo cp infra/mysql/isucon.cnf /etc/mysql/conf.d/isucon.cnf"
+        exec ip_address, "sudo cp infra/mysql/isucon_innodb.cnf /etc/mysql/conf.d/isucon_innodb.cnf"
         exec ip_address, "sudo cp infra/mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf "
         exec ip_address, "sudo mysqld --verbose --help > /dev/null"
 
@@ -101,6 +106,8 @@ namespace :deploy do
         exec_service ip_address, service: "mysql", enabled: true
         # exec_service ip_address, service: "mariadb", enabled: true
       else
+        exec ip_address, "sudo rm -f /etc/mysql/conf.d/isucon_innodb.cnf"
+
         exec_service ip_address, service: "mysql", enabled: false
         # exec_service ip_address, service: "mariadb", enabled: false
       end

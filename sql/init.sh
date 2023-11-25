@@ -3,8 +3,12 @@
 set -eux
 cd $(dirname $0)
 
-if test -f /home/isucon/env.sh; then
-	. /home/isucon/env.sh
+# if test -f /home/isucon/env.sh; then
+# 	. /home/isucon/env.sh
+# fi
+
+if test -f /home/isucon/webapp/env.sh; then
+	. /home/isucon/webapp/env.sh
 fi
 
 ISUCON_DB_HOST=${ISUCON13_MYSQL_DIALCONFIG_ADDRESS:-127.0.0.1}
