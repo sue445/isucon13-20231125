@@ -14,7 +14,7 @@ EnvironmentFile=/home/isucon/secret_env
 User=isucon
 Group=isucon
 # ExecStart=/home/isucon/.x bundle exec puma --bind tcp://0.0.0.0:8080 --workers 8 --threads 0:8 --environment production
-ExecStart=/home/isucon/.x /home/isucon/local/ruby/versions/3.3.0-dev/bin/bundle exec puma --bind tcp://0.0.0.0:8080 --workers 8 --threads 0:8 --environment production
+ExecStart=/home/isucon/.x /home/isucon/local/ruby/versions/3.3.0-dev/bin/bundle exec puma -C /home/isucon/webapp/ruby/config/puma_isucon.rb --environment production
 ExecStop=/bin/kill -s QUIT $MAINPID
 
 Restart=on-failure

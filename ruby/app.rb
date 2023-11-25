@@ -206,13 +206,19 @@ module Isupipe
         #     File.binread(FALLBACK_IMAGE)
         #   end
 
-        image_file =
-          if File.exist?("#{ICONS_DIR}/#{user_model.fetch(:name)}.jpg")
-            "#{ICONS_DIR}/#{user_model.fetch(:name)}.jpg"
-          else
-            FALLBACK_IMAGE
-          end
-        image = File.binread(image_file)
+        image = nil
+
+        if File.exist?("#{ICONS_DIR}/#{user_model.fetch(:name)}.jpg")
+          image = File.binread("#{ICONS_DIR}/#{user_model.fetch(:name)}.jpg")
+        end
+
+        # FIXME: icon_hashをDBに入れるまでの暫定対応
+        unless image
+          icon_model = tx.xquery('SELECT image FROM icons WHERE user_id = ?', user_model.fetch(:id)).first
+          image = icon_model.fetch(:image) if icon_model
+        end
+
+        image = File.binread(FALLBACK_IMAGE) unless image
 
         icon_hash = Digest::SHA256.hexdigest(image)
 
