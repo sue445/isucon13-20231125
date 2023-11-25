@@ -95,6 +95,7 @@ namespace :deploy do
       case name
       when :host02
         exec ip_address, "sudo cp infra/mysql/isucon.cnf /etc/mysql/conf.d/isucon.cnf"
+        exec ip_address, "sudo cp infra/mysql/isucon_innodb.cnf /etc/mysql/conf.d/isucon_innodb.cnf"
         exec ip_address, "sudo cp infra/mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf "
         exec ip_address, "sudo mysqld --verbose --help > /dev/null"
 
@@ -105,6 +106,8 @@ namespace :deploy do
         exec_service ip_address, service: "mysql", enabled: true
         # exec_service ip_address, service: "mariadb", enabled: true
       else
+        exec ip_address, "sudo rm -f /etc/mysql/conf.d/isucon_innodb.cnf"
+
         exec_service ip_address, service: "mysql", enabled: false
         # exec_service ip_address, service: "mariadb", enabled: false
       end
