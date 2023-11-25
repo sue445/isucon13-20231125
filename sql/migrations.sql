@@ -3,3 +3,5 @@
 ALTER TABLE themes ADD INDEX user_id (user_id);
 
 ALTER TABLE livestream_tags ADD INDEX livestream_id (livestream_id);
+
+ALTER TABLE reactions ADD INDEX livestream_id_and_created_at (livestream_id, created_at);
