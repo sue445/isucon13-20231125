@@ -24,8 +24,6 @@ CREATE TABLE `themes` (
   `dark_mode` BOOLEAN NOT NULL
 ) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 
-ALTER TABLE themes ADD INDEX user_id (user_id);
-
 -- ライブ配信
 CREATE TABLE `livestreams` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -59,8 +57,6 @@ CREATE TABLE `livestream_tags` (
   `livestream_id` BIGINT NOT NULL,
   `tag_id` BIGINT NOT NULL
 ) ENGINE=InnoDB CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
-
-ALTER TABLE livestream_tags ADD INDEX livestream_id (livestream_id);
 
 -- ライブ配信視聴履歴
 CREATE TABLE `livestream_viewers_history` (
