@@ -47,19 +47,19 @@ end
 
 def exec_service(ip_address, service:, enabled:, status: true)
   if enabled
-    # exec ip_address, "sudo systemctl restart #{service}"
-    # exec ip_address, "sudo systemctl enable #{service}"
-    exec ip_address, "sudo systemctl enable --now #{service}"
+    exec ip_address, "sudo systemctl restart #{service}"
+    exec ip_address, "sudo systemctl enable #{service}"
+    # exec ip_address, "sudo systemctl enable --now #{service}"
 
     if status
       exec ip_address, "sudo systemctl status #{service}"
     end
   else
-    # exec ip_address, "sudo systemctl stop #{service}"
-    # exec ip_address, "sudo systemctl disable #{service}"
+    exec ip_address, "sudo systemctl stop #{service}"
+    exec ip_address, "sudo systemctl disable #{service}"
 
     # FIXME: stopしてもなぜか起動する
-    exec ip_address, "sudo systemctl disable --now #{service}"
+    # exec ip_address, "sudo systemctl disable --now #{service}"
   end
 end
 
