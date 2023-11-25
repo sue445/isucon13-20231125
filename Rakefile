@@ -47,8 +47,9 @@ end
 
 def exec_service(ip_address, service:, enabled:, status: true)
   if enabled
-    exec ip_address, "sudo systemctl restart #{service}"
-    exec ip_address, "sudo systemctl enable #{service}"
+    # exec ip_address, "sudo systemctl restart #{service}"
+    # exec ip_address, "sudo systemctl enable #{service}"
+    exec ip_address, "sudo systemctl enable --now #{service}"
 
     if status
       exec ip_address, "sudo systemctl status #{service}"
