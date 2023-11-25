@@ -1,4 +1,5 @@
 require 'mysql2'
+require 'mysql2-cs-bind'
 
 module DBHelper
   def db_conn
