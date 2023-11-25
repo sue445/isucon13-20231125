@@ -14,28 +14,28 @@ require "json"
 
 # デプロイ先のサーバ
 HOSTS = {
-  # host01: "isucon-01",
+  host01: "isucon-01", # nginx, mysql, app
   # host02: "isucon-02",
   # host03: "isucon-03",
 }
 
-INITIALIZE_ENDPOINT = "http://#{HOSTS[:host01]}/initialize"
+INITIALIZE_ENDPOINT = "https://test001.u.isucon.dev/api/initialize"
 
 # デプロイ先のカレントディレクトリ
-CURRENT_DIR = "/home/isucon/isutrain"
+CURRENT_DIR = "/home/isucon/webapp"
 
 # rubyアプリのディレクトリ
-RUBY_APP_DIR = "/home/isucon/APP_NAME/webapp/ruby"
+RUBY_APP_DIR = "/home/isucon/webapp/ruby"
 
 # アプリのservice名
 # NOTE: `sudo systemctl list-unit-files --type=service | grep isu` などで調べる
-APP_SERVICE_NAME = "isuxxxxx-ruby.service"
+APP_SERVICE_NAME = "isupipe-ruby.service"
 
 # デプロイを記録するissue
-GITHUB_REPO     = "sue445/isuconXX-qualify"
+GITHUB_REPO     = "sue445/isucon13-20231125"
 GITHUB_ISSUE_ID = 1
 
-RUBY_VERSION_PATH = "#{__dir__}/webapp/ruby/.ruby-version"
+RUBY_VERSION_PATH = "#{__dir__}/ruby/.ruby-version"
 
 ruby_version = File.read(RUBY_VERSION_PATH).strip
 
@@ -119,17 +119,17 @@ namespace :deploy do
       # app
       case name
       when :host01
-        # exec ip_address, "#{BUNDLE} config set --local path 'vendor/bundle'", cwd: RUBY_APP_DIR
-        # exec ip_address, "#{BUNDLE} config set --local jobs $(nproc)", cwd: RUBY_APP_DIR
-        # exec ip_address, "#{BUNDLE} config set --local without development test", cwd: RUBY_APP_DIR
+        exec ip_address, "#{BUNDLE} config set --local path 'vendor/bundle'", cwd: RUBY_APP_DIR
+        exec ip_address, "#{BUNDLE} config set --local jobs $(nproc)", cwd: RUBY_APP_DIR
+        exec ip_address, "#{BUNDLE} config set --local without development test", cwd: RUBY_APP_DIR
 
-        # exec ip_address, "#{BUNDLE} install", cwd: RUBY_APP_DIR
+        exec ip_address, "#{BUNDLE} install", cwd: RUBY_APP_DIR
         # FIXME: ruby 3.2.0-devだとddtraceのnative extensionのbuildに失敗するのでこっちを使う
         # exec ip_address, "DD_PROFILING_NO_EXTENSION=true #{BUNDLE} install", cwd: RUBY_APP_DIR
 
-        # exec_service ip_address, service: APP_SERVICE_NAME, enabled: true
+        exec_service ip_address, service: APP_SERVICE_NAME, enabled: true
       else
-        # exec_service ip_address, service: APP_SERVICE_NAME, enabled: false
+        exec_service ip_address, service: APP_SERVICE_NAME, enabled: false
       end
 
       # redis
@@ -182,7 +182,7 @@ multitask :deploy => HOSTS.keys.map { |name| "deploy:#{name}" }
 
 desc "POST /initialize"
 task :initialize do
-  sh "curl -X POST --retry 3 --fail #{INITIALIZE_ENDPOINT}"
+  sh "curl -X POST --retry 5 --fail #{INITIALIZE_ENDPOINT}"
 end
 
 desc "Record current commit to issue"
