@@ -14,9 +14,9 @@ require "json"
 
 # デプロイ先のサーバ
 HOSTS = {
-  host01: "isucon-01", # nginx, app
+  host01: "isucon-01", # nginx, app(image)
   host02: "isucon-02", # mysql
-  # host03: "isucon-03",
+  host03: "isucon-03", # app(image以外)
 }
 
 INITIALIZE_ENDPOINT = "https://test001.u.isucon.dev/api/initialize"
@@ -125,7 +125,7 @@ namespace :deploy do
 
       # app
       case name
-      when :host01
+      when :host01, :host03
         exec ip_address, "#{BUNDLE} config set --local path 'vendor/bundle'", cwd: RUBY_APP_DIR
         exec ip_address, "#{BUNDLE} config set --local jobs $(nproc)", cwd: RUBY_APP_DIR
         exec ip_address, "#{BUNDLE} config set --local without development test", cwd: RUBY_APP_DIR
