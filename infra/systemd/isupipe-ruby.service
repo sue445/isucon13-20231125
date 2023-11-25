@@ -7,7 +7,9 @@ Requires=mysql.service
 [Service]
 WorkingDirectory=/home/isucon/webapp/ruby
 Environment=RUBY_YJIT_ENABLE=1
-EnvironmentFile=/home/isucon/env.sh
+# EnvironmentFile=/home/isucon/env.sh
+EnvironmentFile=/home/isucon/webapp/env.sh
+EnvironmentFile=/home/isucon/secret_env
 
 User=isucon
 Group=isucon
