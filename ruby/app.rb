@@ -213,10 +213,10 @@ module Isupipe
         end
 
         # FIXME: icon_hashをDBに入れるまでの暫定対応
-        unless image
-          icon_model = tx.xquery('SELECT image FROM icons WHERE user_id = ?', user_model.fetch(:id)).first
-          image = icon_model.fetch(:image) if icon_model
-        end
+        # unless image
+        #   icon_model = tx.xquery('SELECT image FROM icons WHERE user_id = ?', user_model.fetch(:id)).first
+        #   image = icon_model.fetch(:image) if icon_model
+        # end
 
         image = File.binread(FALLBACK_IMAGE) unless image
 
