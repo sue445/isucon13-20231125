@@ -19,7 +19,7 @@ HOSTS = {
   # host03: "isucon-03",
 }
 
-INITIALIZE_ENDPOINT = "http://#{HOSTS[:host01]}/initialize"
+INITIALIZE_ENDPOINT = "https://test001.u.isucon.dev/api/initialize"
 
 # デプロイ先のカレントディレクトリ
 CURRENT_DIR = "/home/isucon/webapp"
