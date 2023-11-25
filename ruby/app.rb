@@ -151,6 +151,12 @@ module Isupipe
       end
 
       def fill_livecomment_response(tx, livecomment_model)
+        # FIXME: livecomment_modelにnilが入っていることがある
+        # c.f
+        # * https://github.com/sue445/isucon13-20231125/issues/18
+        # * https://sue445.sentry.io/share/issue/90a9b3def2814770b1093fbaaa5b874d/
+        return unless livecomment_model
+
         comment_owner_model = tx.xquery('SELECT * FROM users WHERE id = ?', livecomment_model.fetch(:user_id)).first
         comment_owner = fill_user_response(tx, comment_owner_model)
 
