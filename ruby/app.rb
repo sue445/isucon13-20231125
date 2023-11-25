@@ -798,7 +798,15 @@ module Isupipe
       icon_id = db_transaction do |tx|
         tx.xquery('DELETE FROM icons WHERE user_id = ?', user_id)
         tx.xquery('INSERT INTO icons (user_id, image) VALUES (?, ?)', user_id, image)
-        tx.last_id
+        id = tx.last_id
+
+        # iconsにも保存する
+        user = tx.xquery("SELECT name FROM users WHERE id = ?", user_id).first
+        File.open("#{ICONS_DIR}/#{user[:name]}.jpg", 'wb') do |f|
+          f.write(image)
+        end
+
+        id
       end
 
       status 201
