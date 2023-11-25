@@ -1,0 +1,5 @@
+# 物理メモリの8割
+innodb_buffer_pool_size = 2956M
+
+# innodb_buffer_pool_sizeの1/4程度
+innodb_log_file_size = 739M
