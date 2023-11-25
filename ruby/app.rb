@@ -759,24 +759,31 @@ module Isupipe
     BCRYPT_DEFAULT_COST = 4
     FALLBACK_IMAGE = '../img/NoImage.jpg'
 
-    # get '/api/user/:username/icon' do
-    #   username = params[:username]
-    #
-    #   image = db_transaction do |tx|
-    #     user = tx.xquery('SELECT * FROM users WHERE name = ?', username).first
-    #     unless user
-    #       raise HttpError.new(404, 'not found user that has the given username')
-    #     end
-    #     tx.xquery('SELECT image FROM icons WHERE user_id = ?', user.fetch(:id)).first
-    #   end
-    #
-    #   content_type 'image/jpeg'
-    #   if image
-    #     image[:image]
-    #   else
-    #     send_file FALLBACK_IMAGE
-    #   end
-    # end
+    get '/api/user/:username/icon' do
+      username = params[:username]
+
+      # image = db_transaction do |tx|
+      #   user = tx.xquery('SELECT * FROM users WHERE name = ?', username).first
+      #   unless user
+      #     raise HttpError.new(404, 'not found user that has the given username')
+      #   end
+      #   tx.xquery('SELECT image FROM icons WHERE user_id = ?', user.fetch(:id)).first
+      # end
+      #
+      # content_type 'image/jpeg'
+      # if image
+      #   image[:image]
+      # else
+      #   send_file FALLBACK_IMAGE
+      # end
+
+      content_type 'image/jpeg'
+      if File.exist?("#{ICONS_DIR}/#{username}.jpg")
+        send_file "#{ICONS_DIR}/#{username}.jpg"
+      else
+        send_file FALLBACK_IMAGE
+      end
+    end
 
     PostIconRequest = Data.define(:image)
 
@@ -802,7 +809,6 @@ module Isupipe
 
         # iconsにも保存する
         user = tx.xquery("SELECT name FROM users WHERE id = ?", user_id).first
-        raise "WIP: #{ICONS_DIR}/#{user[:name]}.jpg"
 
         File.open("#{ICONS_DIR}/#{user[:name]}.jpg", 'wb') do |f|
           f.write(image)
