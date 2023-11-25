@@ -16,7 +16,7 @@ require "json"
 HOSTS = {
   host01: "isucon-01", # nginx, app(image)
   host02: "isucon-02", # mysql
-  host03: "isucon-03", # app(image以外), PowerDNS
+  host03: "isucon-03", # app(image以外)
 }
 
 INITIALIZE_ENDPOINT = "https://test001.u.isucon.dev/api/initialize"
@@ -93,7 +93,7 @@ namespace :deploy do
 
       # mysql, mariadb
       case name
-      when :host02, :host03
+      when :host02
         exec ip_address, "sudo cp infra/mysql/isucon.cnf /etc/mysql/conf.d/isucon.cnf"
         exec ip_address, "sudo cp infra/mysql/isucon_innodb.cnf /etc/mysql/conf.d/isucon_innodb.cnf"
         exec ip_address, "sudo cp infra/mysql/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf "
