@@ -14,8 +14,8 @@ require "json"
 
 # デプロイ先のサーバ
 HOSTS = {
-  host01: "isucon-01", # nginx, mysql, app
-  # host02: "isucon-02",
+  host01: "isucon-01", # nginx, app
+  host02: "isucon-02", # mysql
   # host03: "isucon-03",
 }
 
