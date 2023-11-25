@@ -48,6 +48,10 @@ module Isupipe
     DEFAULT_USER_ID_KEY = 'USERID'
     DEFAULT_USERNAME_KEY = 'USERNAME'
 
+    ICONS_DIR = "/home/isucon/webapp/img/icons"
+
+    ICONS_DUMP_DIR = "/home/isucon/webapp/img/icons_dump"
+
     class HttpError < StandardError
       attr_reader :code
 
@@ -218,6 +222,10 @@ module Isupipe
         
         halt 500
       end
+
+      # iconsを全部消してicon_dumpからコピーして初期化する
+      system("rm -rf #{ICONS_DIR}/*", exception: true)
+      system("cp #{ICONS_DUMP_DIR}/* #{ICONS_DIR}/", exception: true)
 
       json(
         language: 'ruby',
