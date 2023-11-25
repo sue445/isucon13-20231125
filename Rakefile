@@ -14,9 +14,9 @@ require "json"
 
 # デプロイ先のサーバ
 HOSTS = {
-  host01: "isucon-01", # nginx, app(image)
+  host01: "isucon-01", # nginx, app
   host02: "isucon-02", # mysql
-  host03: "isucon-03", # app(image以外)
+  # host03: "isucon-03", # app(image以外)
 }
 
 INITIALIZE_ENDPOINT = "https://test001.u.isucon.dev/api/initialize"
